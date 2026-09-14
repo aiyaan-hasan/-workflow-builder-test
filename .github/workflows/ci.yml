@@ -1,0 +1,23 @@
+name: CI Build & Deploy
+
+on:
+    push:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      NODE_ENV: production
+    steps:
+    - name: Install dependencies
+      run: npm install
+    - name: Run tests
+      run: npm test
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
